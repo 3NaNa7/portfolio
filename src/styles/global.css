@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@theme {
+  --color-teal: #2C6E68;
+  --color-amber: #E0A458;
+  --color-paper: #F7F5EE;
+  --color-ink: #20302E;
+  --color-coral: #E0765A;
+
+  --font-heading: "Fraunces Variable", "Fraunces", serif;
+  --font-body: "Karla Variable", "Karla", sans-serif;
+}

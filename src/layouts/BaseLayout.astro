@@ -1,0 +1,25 @@
+---
+import "../styles/global.css";
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/karla";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Personal portfolio and CV" } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-paper text-ink font-body">
+    <slot />
+  </body>
+</html>
