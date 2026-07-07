@@ -1,14 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 ---
 
 <BaseLayout title="Portfolio — home">
-  <main class="min-h-screen flex items-center justify-center">
-    <div class="text-center px-6">
-      <h1 class="font-heading text-5xl text-teal">Hi, I build things</h1>
-      <p class="font-body text-ink/70 mt-4">
-        Base layout, fonts, and color tokens are wired up.
-      </p>
-    </div>
+  <main>
+    <Hero />
   </main>
 </BaseLayout>
