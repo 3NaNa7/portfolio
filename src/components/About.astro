@@ -6,10 +6,38 @@
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" class="absolute top-0 left-0 w-full h-24 sm:h-32" aria-hidden="true">
   <path d="M0,50 Q360,15 720,45 T1440,30 L1440,0 L0,0 Z" fill="#A8CFC9" opacity="0.25" />
 </svg>
-  <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row gap-12 md:gap-16">
+  <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row gap-12 md:gap-16">
 
     <!-- Left side: Bio text -->
     <div class="flex-1 space-y-6">
+      <!-- Illustrated Avatar, increase w,h,md values to increase size of avatar -->
+      <div class="relative w-52 h-52 md:w-64 md:h-64 select-none pointer-events-none">
+        <!-- Dashed Ring echoing Hero dashed path -->
+        <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="47"
+            fill="none"
+            stroke="var(--color-ink)"
+            stroke-width="2"
+            stroke-dasharray="5 5"
+            opacity="0.25"
+          />
+        </svg>
+        <!-- Circular Backdrop -->
+        <div
+          class="absolute bg-amber/20 rounded-full flex items-center justify-center overflow-hidden"
+          style="inset: 4.5%;"
+        >
+          <img
+            src="/avatar.svg"
+            alt="Illustrated portrait of Samuelson Boadu-Acheampong"
+            class="w-full h-full object-contain"
+          />
+        </div>
+      </div>
+
       <h2 class="font-heading text-3xl sm:text-4xl text-ink">
         A bit about me
       </h2>

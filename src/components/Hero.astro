@@ -78,24 +78,14 @@
       transform: translate(12px, -12px);
     }
   }
-  @keyframes driftCloud1 {
+   @keyframes driftCloud1 {
+    0%, 100% { transform: translate(0, 0); }
     50% { transform: translate(14px, -18px); }
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-  @keyframes driftCloud2 {
+}
+@keyframes driftCloud2 {
+    0%, 100% { transform: translate(0, 0); }
     50% { transform: translate(-10px, -22px); }
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-12px);
-    }
-  }
+}
   @keyframes bobCompanion {
     0%, 100% {
       transform: translateY(0);
