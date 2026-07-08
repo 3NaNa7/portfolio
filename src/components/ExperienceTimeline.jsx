@@ -228,8 +228,12 @@ export default function ExperienceTimeline() {
                 <h3 className="font-heading text-2xl font-bold text-ink">
                   {experiences[activeIndex].role}
                 </h3>
-                <p className="font-heading text-lg text-teal font-semibold mt-1">
-                  {experiences[activeIndex].org}
+                <p className="font-heading text-lg text-teal font-semibold mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                  <span>{experiences[activeIndex].org}</span>
+                  <span className="hidden sm:inline text-ink/30 font-light">•</span>
+                  <span className="font-body text-xs sm:text-sm text-ink/60 font-normal">
+                    {experiences[activeIndex].location}
+                  </span>
                 </p>
               </div>
               <span className="font-body text-sm font-semibold px-3 py-1 bg-coral/10 text-coral rounded-full whitespace-nowrap">
