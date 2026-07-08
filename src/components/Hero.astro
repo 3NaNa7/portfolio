@@ -8,48 +8,55 @@
        Junior Developer and Researcher, building playful and useful things.
     </p>
   </div>
-
   <!-- SVG Illustration Container -->
-  <div class="absolute inset-0 z-0 flex items-end justify-center pointer-events-none">
-    <svg viewBox="0 0 1440 600" class="w-full h-full object-cover object-bottom min-h-[350px] sm:min-h-[500px]"
-    preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-       <!-- Sun/Orb -->
-       <circle id="hero-sun" cx="1150" cy="130" r="50" fill="var(--color-amber)" />
+  <div class="absolute inset-0 z-0 pointer-events-none">
+    <svg viewBox="0 0 1440 600" class="w-full h-full object-cover object-bottom"
+     preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
 
-       <!-- Clouds -->
-       <ellipse id="hero-cloud-1" cx="300" cy="140" rx="70" ry="25" fill="#FFFFFF" opacity="1" />
-       <ellipse id="hero-cloud-2" cx="850" cy="180" rx="90" ry="32" fill="#FFFFFF" opacity="1" />
-       <ellipse id="hero-cloud-3" cx="600" cy="160" rx="80" ry="28" fill="#FFFFFF" opacity="1" />
-
-       <!-- Rolling Hills (back, middle, front) -->
-       <!-- Back hill (lightest teal) -->
-       <path d="M 0 350 Q 360 250, 720 380 T 1440 320 L 1440 600 L 0 600 Z" fill="#A8CFC9" />
-
-       <!-- Middle hill (mid teal) -->
-       <path d="M 0 420 Q 400 320, 800 450 T 1440 400 L 1440 600 L 0 600 Z" fill="#4E8F89" />
-
-       <!-- Front hill (darkest teal / main teal theme color) -->
-       <path d="M 0 490 Q 300 410, 600 510 T 1440 470 L 1440 600 L 0 600 Z" fill="var(--color-teal)" />
-
-        <!-- Dashed Path leading to companion -->
-       <path id="hero-path" d="M -50 550 C 200 500, 400 560, 600 480 C 800 400, 1000 520, 1150 460" fill="none"
-       stroke="var(--color-ink)"
-       stroke-width="3" stroke-dasharray="8 8" opacity="0.6" />
-
-       <!-- Companion Character at (1150, 460) -->
-       <g id="hero-companion">
-         <!-- Feet -->
-         <ellipse cx="1135" cy="470" rx="8" ry="4" fill="var(--color-coral)" />
-         <ellipse cx="1165" cy="470" rx="8" ry="4" fill="var(--color-coral)" />
-         <!-- Body -->
-         <ellipse cx="1150" cy="450" rx="25" ry="18" fill="var(--color-coral)" />
-         <!-- Eyes -->
-         <circle cx="1142" cy="445" r="3" fill="var(--color-ink)" />
-         <circle cx="1158" cy="445" r="3" fill="var(--color-ink)" />
-       </g>
+        <!-- Sun/Orb -->
+        <g id="hero-sun-group">
+          <circle id="hero-sun" cx="1150" cy="60" r="50" fill="var(--color-amber)" />
+        </g>
+        <!-- Clouds -->
+        <g id="hero-cloud-1-group">
+          <ellipse id="hero-cloud-1" cx="300" cy="80" rx="70" ry="25" fill="
+#FFFFFF" opacity="1" />
+        </g>
+        <ellipse id="hero-cloud-3" cx="600" cy="100" rx="80" ry="28" fill="
+#FFFFFF" opacity="1" />
+        <g id="hero-cloud-2-group">
+          <ellipse id="hero-cloud-2" cx="850" cy="120" rx="90" ry="32" fill="
+#FFFFFF" opacity="1" />
+        </g>
+        <!-- Rolling Hills (back, middle, front) -->
+        <!-- Back hill (lightest teal) -->
+        <path d="M 0 350 Q 360 250, 720 380 T 1440 320 L 1440 600 L 0 600 Z" fill="
+#A8CFC9" />
+        <!-- Middle hill (mid teal) -->
+        <path d="M 0 420 Q 400 320, 800 450 T 1440 400 L 1440 600 L 0 600 Z" fill="
+#4E8F89" />
+        <!-- Front hill (darkest teal / main teal theme color) -->
+        <path d="M 0 490 Q 300 410, 600 510 T 1440 470 L 1440 600 L 0 600 Z" fill="var(--color-teal)" />
+        <!-- Dashed Path & Companion Group (shifted together on mobile) -->
+        <g id="hero-interactive-group">
+          <!-- Dashed Path leading to companion -->
+          <path id="hero-path" d="M -50 550 C 200 500, 400 560, 600 480 C 800 400, 1000 520, 1150 460" fill="none"
+          stroke="var(--color-ink)"
+          stroke-width="3" stroke-dasharray="8 8" opacity="0.6" />
+          <!-- Companion Character at (1150, 460) -->
+          <g id="hero-companion">
+            <!-- Feet -->
+            <ellipse cx="1135" cy="470" rx="8" ry="4" fill="var(--color-coral)" />
+            <ellipse cx="1165" cy="470" rx="8" ry="4" fill="var(--color-coral)" />
+            <!-- Body -->
+            <ellipse cx="1150" cy="450" rx="25" ry="18" fill="var(--color-coral)" />
+            <!-- Eyes -->
+            <circle cx="1142" cy="445" r="3" fill="var(--color-ink)" />
+            <circle cx="1158" cy="445" r="3" fill="var(--color-ink)" />
+          </g>
+        </g>
     </svg>
   </div>
-
   <!-- Scroll Down indicator -->
   <div class="relative z-10 w-full flex flex-col items-center pb-8 pt-4">
     <a href="#about" class="flex flex-col items-center space-y-1 text-ink/80 hover:text-teal transition-colors duration-200">
@@ -61,7 +68,6 @@
     </a>
   </div>
 </section>
-
 <style>
   /* Keyframes for Idle Animations */
   @keyframes floatSun {
@@ -72,7 +78,6 @@
       transform: translate(12px, -12px);
     }
   }
-
   @keyframes driftCloud1 {
     50% { transform: translate(14px, -18px); }
     0%, 100% {
@@ -82,7 +87,6 @@
       transform: translateY(-8px);
     }
   }
-
   @keyframes driftCloud2 {
     50% { transform: translate(-10px, -22px); }
     0%, 100% {
@@ -92,7 +96,6 @@
       transform: translateY(-12px);
     }
   }
-
   @keyframes bobCompanion {
     0%, 100% {
       transform: translateY(0);
@@ -101,29 +104,81 @@
       transform: translateY(-10px);
     }
   }
-
   /* SVG Element Selectors applying origin & boxes */
   #hero-sun {
     transform-box: fill-box;
     transform-origin: center;
     animation: floatSun 6s ease-in-out infinite;
   }
-
   #hero-cloud-1 {
     transform-box: fill-box;
     transform-origin: center;
     animation: driftCloud1 8s ease-in-out infinite;
   }
-
   #hero-cloud-2 {
     transform-box: fill-box;
     transform-origin: center;
     animation: driftCloud2 10s ease-in-out infinite;
   }
-
   #hero-companion {
     transform-box: fill-box;
     transform-origin: center;
     animation: bobCompanion 3s ease-in-out infinite;
+  }
+
+  /* Smooth transition for breakpoint shifts */
+  #hero-sun-group,
+  #hero-cloud-1-group,
+  #hero-cloud-2-group,
+  #hero-interactive-group {
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Fade and float transition for cloud 3 */
+  #hero-cloud-3 {
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Hide cloud 3 on all screen widths 1024px and below (tablets & mobile) to prevent overlapping */
+  @media (max-width: 1024px) {
+    #hero-cloud-3 {
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-25px, 60px);
+    }
+  }
+
+  /* Tablet positioning adjustments for SVG groups (641px - 1024px) */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    #hero-sun-group {
+      transform: translate(-260px, 15px);
+    }
+    #hero-cloud-1-group {
+      transform: translate(220px, 10px);
+    }
+    #hero-cloud-2-group {
+      transform: translate(-100px, 20px);
+    }
+    #hero-interactive-group {
+      transform: translate(-250px, 5px);
+    }
+  }
+
+  /* Mobile positioning adjustments for SVG groups when cropped */
+  @media (max-width: 640px) {
+    #hero-sun-group {
+      transform: translate(-300px, 30px);
+    }
+    #hero-cloud-1-group {
+      transform: translate(250px, 20px);
+    }
+    #hero-cloud-2-group {
+      transform: translate(-100px, 40px);
+    }
+    #hero-interactive-group {
+      transform: translate(-300px, 10px);
+    }
   }
 </style>
