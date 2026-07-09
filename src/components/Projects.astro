@@ -1,0 +1,283 @@
+---
+const projects = [
+  {
+    slug: 'findme',
+    name: 'FindMe',
+    status: 'early',
+    tagline: 'The first app I ever built.',
+    description: 'A simple real-time location sharing app — share your position with friends, watch it update live, and get it converted into a readable address via the Google Maps API. Not much UI polish, but everything here taught me how apps actually work.',
+    tech: ['Google Maps API', 'Real-time updates', 'Geocoding'],
+    repoUrl: 'https://github.com/3NaNa7/FindMe',
+    repoPrivate: false,
+    screenshot: '/projects/findme/1.png',
+  },
+  {
+    slug: 'afrisign',
+    name: 'AfriSign',
+    status: 'paused',
+    tagline: 'Sign language translation — paused, not abandoned.',
+    description: 'Built as a research assistant on the AfriSign project: the full frontend for a sign language machine translation app. My contract ended before the frontend could be wired up to the translation model, so the app works but doesn\'t yet talk to any AI. Next step: find an open sign-language model on Hugging Face or GitHub and finish the connection myself.',
+    tech: ['Flutter', 'ML model integration (in progress)'],
+    repoUrl: 'https://github.com/3NaNa7/afrisign',
+    repoPrivate: false,
+    screenshot: '/projects/afrisign/1.png',
+  },
+  {
+    slug: 'dialogi',
+    name: 'Dialogi',
+    status: 'flagship',
+    tagline: 'Real-time audio rooms for academic discussion.',
+    description: 'Join a default room or spin up your own, drop in on a live conversation the way you would on a call, and talk through whatever academic topic brought you there. Real-time audio is powered by Agora, with Firebase handling auth and data underneath.',
+    tech: ['Agora.io', 'Firebase', 'Firebase Auth', 'Provider'],
+    repoUrl: 'https://github.com/3NaNa7/dialogi',
+    repoPrivate: false,
+    screenshot: '/projects/dialogi/1.jpg',
+  },
+  {
+    slug: 'reproplan',
+    name: 'ReproPlan',
+    status: 'flagship',
+    tagline: 'Anonymous SRHR guidance for Ghanaian youth.',
+    description: 'An AI-powered, fully anonymous platform for sexual and reproductive health information. A local-and-cloud LLM chatbot answers questions privately, and OpenStreetMap routes users to their nearest clinic when they need one.',
+    tech: ['Local + cloud LLM', 'Supabase', 'OpenStreetMap', 'Riverpod'],
+    repoUrl: null,
+    repoPrivate: true,
+    screenshot: '/projects/reproplan/1.png',
+  },
+];
+---
+
+<section id="projects" class="relative overflow-hidden w-full bg-paper py-24 md:py-32 border-t border-ink/10">
+  <div class="max-w-5xl mx-auto px-6">
+    <!-- Header -->
+    <div class="mb-20 text-left">
+      <span class="font-sans text-xs uppercase tracking-widest font-bold text-teal block mb-3">
+        Along the Way
+      </span>
+      <h2 class="font-heading text-4xl sm:text-5xl font-bold text-ink mb-4">
+        Projects
+      </h2>
+      <p class="font-sans text-base sm:text-lg text-ink/70 max-w-2xl leading-relaxed">
+        Mobile apps, roughly in the order I built them — each one a step further than the last.
+      </p>
+    </div>
+
+    <!-- Timeline Wrapper -->
+    <div class="relative w-full pl-8 md:pl-0">
+      
+      <!-- Vertical Trail Line -->
+      <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 pointer-events-none z-0 select-none opacity-20 bg-trail"></div>
+
+      <!-- Projects Grid/List -->
+      <div class="flex flex-col gap-16 md:gap-28 relative z-10">
+        {projects.map((project, index) => {
+          const isEarly = project.status === 'early';
+          const isPaused = project.status === 'paused';
+          
+          return (
+            <div class="project-card relative w-full flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+              
+              <!-- Timeline Dot Marker -->
+              <div class="project-dot absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-coral border-4 border-paper z-20 shadow-sm"></div>
+
+              <!-- Visual Phone Mockup / Screenshot window -->
+              <div class="phone-container flex-shrink-0 flex items-center justify-center">
+                {isEarly ? (
+                  /* Early/FindMe style: 70% scale, simple border */
+                  <div class="relative w-[140px] h-[280px] md:w-[126px] md:h-[252px] rounded-xl border border-ink/15 overflow-hidden bg-paper shadow-md">
+                    <div class="relative w-full h-full overflow-hidden bg-paper">
+                      <img 
+                        src={project.screenshot} 
+                        alt={`${project.name} screenshot`} 
+                        class="w-full h-full object-cover"
+                        onload="this.style.display='block'; this.nextElementSibling.style.display='none';"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                      />
+                      <div class="hidden absolute inset-0 bg-teal/10 text-ink/50 font-sans text-[10px] flex-col items-center justify-center p-3 text-center leading-normal">
+                        <span>Add screenshot to</span>
+                        <code class="text-[9px] bg-ink/5 px-1 py-0.5 rounded mt-1 font-mono break-all">
+                          public/projects/{project.slug}/1.png
+                        </code>
+                      </div>
+                      {/* Screen Glare Overlay */}
+                      <div class="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/5 to-white/15 mix-blend-overlay z-20"></div>
+                    </div>
+                  </div>
+                ) : (
+                  /* Normal/Flagship/Paused style: Full frame, notch bezel */
+                  <div class={`relative w-[200px] h-[400px] md:w-[180px] md:h-[360px] rounded-[2rem] p-2 pb-3 pt-6 flex flex-col justify-between shadow-xl phone-frame ${
+                    isPaused ? 'border-2 border-dashed border-coral bg-ink/5' : 'bg-ink'
+                  }`}>
+                    {/* Notch Bezel */}
+                    <div class="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-3.5 bg-ink rounded-full z-30"></div>
+                    
+                    {/* Screen Window */}
+                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden bg-paper">
+                      <img 
+                        src={project.screenshot} 
+                        alt={`${project.name} screenshot`} 
+                        class="w-full h-full object-cover"
+                        onload="this.style.display='block'; this.nextElementSibling.style.display='none';"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                      />
+                      <div class="hidden absolute inset-0 bg-teal/10 text-ink/50 font-sans text-[11px] flex-col items-center justify-center p-3 text-center leading-normal">
+                        <span>Add screenshot to</span>
+                        <code class="text-[9px] bg-ink/5 px-1 py-0.5 rounded mt-1 font-mono break-all">
+                          public/projects/{project.slug}/1.{project.slug === 'dialogi' ? 'jpg' : 'png'}
+                        </code>
+                      </div>
+                      {/* Screen Glare Overlay */}
+                      <div class="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/5 to-white/15 mix-blend-overlay z-20"></div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <!-- Text Panel -->
+              <div class="text-panel flex-1 flex flex-col justify-center max-w-lg">
+                <div class="flex items-center gap-3 mb-2 flex-wrap">
+                  <h3 class="font-heading text-2xl font-bold text-ink leading-none">
+                    {project.name}
+                  </h3>
+                  
+                  {project.status === 'paused' && (
+                    <span class="font-sans text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 bg-coral/10 border border-coral/25 text-coral rounded shadow-[0_0_8px_rgba(224,118,90,0.15)]">
+                      Paused
+                    </span>
+                  )}
+                  {project.status === 'early' && (
+                    <span class="font-sans text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 bg-amber/10 border border-amber/25 text-amber rounded shadow-[0_0_8px_rgba(224,164,88,0.15)]">
+                      Early Work
+                    </span>
+                  )}
+                  {project.status === 'flagship' && (
+                    <span class="font-sans text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 bg-teal/10 border border-teal/25 text-teal rounded shadow-[0_0_8px_rgba(44,110,104,0.15)]">
+                      Flagship
+                    </span>
+                  )}
+                </div>
+
+                <p class="font-sans italic text-sm text-ink/70 mb-3 leading-relaxed">
+                  {project.tagline}
+                </p>
+
+                <p class="font-sans text-sm text-ink/90 mb-5 leading-relaxed">
+                  {project.description}
+                </p>
+
+                {/* Tech Chips */}
+                <div class="flex flex-wrap gap-2 mb-6">
+                  {project.tech.map((t) => (
+                    <span class="font-sans text-[11px] font-semibold px-2.5 py-0.5 bg-teal/10 text-teal rounded-full whitespace-nowrap">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Link Row */}
+                <div class="flex items-center gap-4">
+                  {project.repoPrivate ? (
+                    <span class="font-sans text-xs text-ink/40 select-none flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                      </svg>
+                      Private repo
+                    </span>
+                  ) : (
+                    <a 
+                      href={project.repoUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      class="inline-flex items-center gap-1 font-sans text-xs font-bold text-teal hover:text-teal/80 hover:underline underline-offset-4 transition-all duration-200"
+                    >
+                      View on GitHub
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* repeating linear gradient to echo the dashed path */
+  .bg-trail {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--color-ink) 0,
+      var(--color-ink) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+  }
+
+  /* Mobile positioning of dots */
+  .project-dot {
+    left: -2.5rem; /* center on the 16px left trail line */
+    transform: translate(-1px, -50%);
+  }
+
+  /* Desktop Staggering & Alternating */
+  @media (min-width: 768px) {
+    /* 1st and 3rd card on Left */
+    .project-card:nth-child(odd) {
+      align-self: flex-start;
+      width: calc(50% - 2rem);
+      flex-direction: row-reverse;
+      text-align: right;
+    }
+    .project-card:nth-child(odd) .text-panel {
+      align-items: flex-end;
+    }
+    .project-card:nth-child(odd) .text-panel > div {
+      justify-content: flex-end;
+    }
+    .project-card:nth-child(odd) .project-dot {
+      left: auto;
+      right: -2.5rem;
+      transform: translate(1px, -50%);
+    }
+
+    /* 2nd and 4th card on Right */
+    .project-card:nth-child(even) {
+      align-self: flex-end;
+      width: calc(50% - 2rem);
+      flex-direction: row;
+      text-align: left;
+    }
+    .project-card:nth-child(even) .text-panel {
+      align-items: flex-start;
+    }
+    .project-card:nth-child(even) .project-dot {
+      left: -2.5rem;
+      transform: translate(-1px, -50%);
+    }
+  }
+
+  /* Interactive hover animations (respects prefers-reduced-motion) */
+  @media (prefers-reduced-motion: no-preference) {
+    .project-dot {
+      transition: scale 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    }
+    .project-card:hover .project-dot {
+      scale: 1.25;
+      box-shadow: 0 0 0 4px rgba(224, 118, 90, 0.25), 0 0 12px var(--color-coral);
+    }
+
+    .phone-frame {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    }
+    .phone-frame:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+  }
+</style>
