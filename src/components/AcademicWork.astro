@@ -1,0 +1,103 @@
+---
+import { academicRoles, publications } from "../data/academic.js";
+---
+
+<section id="academic" class="relative overflow-hidden w-full bg-paper pt-8 pb-16 sm:pt-12 sm:pb-24 md:pt-16 md:pb-32 border-t border-ink/10">
+  <div class="max-w-5xl mx-auto px-6">
+    <!-- Header -->
+    <h2 class="font-heading text-3xl sm:text-4xl text-ink mb-12">
+      Academic work
+    </h2>
+
+    <!-- Academic Roles Layout -->
+    <div class="relative flex flex-col md:grid md:grid-cols-2 gap-6 md:gap-12 items-stretch">
+      {academicRoles.map((role, i) => (
+        <>
+          <div class="flex-1 flex flex-col bg-amber/[0.02] border border-amber/15 border-l-4 border-l-amber rounded-r-lg p-6 hover:border-amber/35 transition-all duration-300 relative z-10">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 border-b border-ink/5 pb-4 mb-4">
+              <div>
+                <h3 class="font-heading text-xl sm:text-2xl font-bold text-ink">
+                  {role.role}
+                </h3>
+                <p class="font-body text-sm font-semibold text-ink/70 mt-1">
+                  {role.org}
+                </p>
+                <p class="font-body text-xs text-ink/50 mt-0.5">
+                  {role.location}
+                </p>
+              </div>
+              <div class="flex flex-col items-start sm:items-end gap-1.5 flex-shrink-0">
+                <span class="font-body text-xs font-semibold px-2.5 py-0.5 bg-amber/15 text-amber rounded-full whitespace-nowrap">
+                  {role.dateRange}
+                </span>
+                <span class="font-body text-[11px] italic text-ink/40">
+                  Supervisor: {role.supervisor}
+                </span>
+              </div>
+            </div>
+
+            <p class="font-body text-sm sm:text-base text-ink/80 leading-relaxed flex-grow">
+              {role.description}
+            </p>
+          </div>
+
+          {/* Visual Connector for Concurrent Roles (Mobile stacked) */}
+          {i === 0 && (
+            <div class="flex md:hidden items-center justify-center my-2 pointer-events-none w-full relative z-20 h-8">
+              {/* Taller vertical line that physically overlaps and stitches the two card borders */}
+              <div class="absolute h-24 w-[2px] bg-amber/30"></div>
+              <span class="relative bg-paper text-amber font-body text-[10px] uppercase tracking-widest font-extrabold px-3 py-1 border border-amber/30 rounded-full shadow-md">
+                Concurrent
+              </span>
+            </div>
+          )}
+        </>
+      ))}
+
+      <!-- Visual Connector for Concurrent Roles (Desktop) -->
+      <div class="hidden md:flex absolute top-12 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center w-full max-w-[140px] pointer-events-none z-20">
+        <div class="w-full h-[1.5px] bg-amber/20"></div>
+        <span class="absolute bg-paper text-amber font-body text-[9px] uppercase tracking-widest font-bold px-2 py-0.5 border border-amber/20 rounded-full shadow-sm backdrop-blur-sm">
+          Concurrent
+        </span>
+      </div>
+    </div>
+
+    <!-- Publications List -->
+    <div class="mt-16">
+      <h3 class="font-heading text-2xl font-bold text-ink mb-8">
+        Publications
+      </h3>
+      <ul class="space-y-8">
+        {publications.map((pub) => (
+          <li class="group">
+            <a
+              href={pub.doi}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-start gap-2 font-heading text-lg sm:text-xl font-bold text-ink group-hover:text-amber transition-colors duration-200 leading-snug"
+            >
+              <span>{pub.title}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2.5"
+                stroke="currentColor"
+                class="w-4 h-4 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-amber flex-shrink-0"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </a>
+            <p class="font-body text-sm sm:text-base text-ink/70 mt-1.5">
+              {pub.authors}
+            </p>
+            <p class="font-body text-xs sm:text-sm italic text-ink/50 mt-1">
+              {pub.venue} • {pub.date}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
