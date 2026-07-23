@@ -53,11 +53,49 @@ import SkillsGrid from './SkillsGrid.jsx';
     </div>
 
     <!-- Right side: Skills grid -->
-    <div class="flex-1">
+    <div class="flex-1 skills-reveal-wrapper">
       <h2 class="font-heading text-3xl sm:text-4xl text-ink mb-6">What I work with</h2>
-      <SkillsGrid client:visible />
+      <SkillsGrid client:load />
     </div>
 
   </div>
 </section>
+
+<style>
+  /* CSS-based scroll reveal that executes instantly without waiting for React hydration */
+  .skills-reveal-wrapper {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  
+  .skills-reveal-wrapper.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  // Vanilla JS observer to trigger scroll reveal instantly
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+
+  const wrapper = document.querySelector('.skills-reveal-wrapper');
+  if (wrapper) {
+    observer.observe(wrapper);
+    
+    // Fallback: If user scrolls extremely fast or JS is slow, 
+    // ensure it shows up after a timeout just in case.
+    setTimeout(() => {
+      wrapper.classList.add('is-revealed');
+    }, 1500);
+  }
+</script>
 

@@ -212,7 +212,7 @@ export default function ExperienceTimeline() {
 
       {/* Experience Details Display (Directional Slide Transitions) */}
       <div className="mt-12 min-h-[220px]">
-        <AnimatePresence mode="wait" custom={direction}>
+        <AnimatePresence mode="wait" custom={direction} initial={false}>
           <motion.div
             key={activeIndex}
             custom={direction}

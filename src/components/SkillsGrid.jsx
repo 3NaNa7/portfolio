@@ -35,6 +35,16 @@ const colorMap = {
 // ─── Filter pill ──────────────────────────────────────────────────────────────
 function FilterPill({ label, color, active, onClick }) {
   const tokens = colorMap[color] ?? colorMap.teal;
+  
+  const isAll = label === 'All';
+  const activeBg = isAll ? 'var(--color-ink)' : tokens.pillActive;
+  const activeText = isAll ? 'var(--color-paper)' : tokens.pillText;
+  
+  // Mobile and Data & Infra categories have amber color assigned
+  const inactiveBorder = color === 'amber' 
+    ? 'rgba(224,164,88,0.50)' 
+    : 'rgba(32,48,46,0.20)';
+
   return (
     <button
       type="button"
@@ -48,24 +58,24 @@ function FilterPill({ label, color, active, onClick }) {
         textTransform: 'uppercase',
         padding: '5px 14px',
         borderRadius: '999px',
-        border: `1.5px solid ${active ? tokens.pillActive : 'rgba(32,48,46,0.20)'}`,
-        background: active ? tokens.pillActive : 'transparent',
-        color: active ? tokens.pillText : 'rgba(32,48,46,0.60)',
+        border: `1.5px solid ${active ? (isAll ? 'var(--color-ink)' : tokens.pillActive) : inactiveBorder}`,
+        background: active ? activeBg : 'transparent',
+        color: active ? activeText : 'var(--color-ink)',
         cursor: 'pointer',
-        transition: 'background 0.18s, border-color 0.18s, color 0.18s',
+        transition: 'all 0.18s ease-in-out',
         whiteSpace: 'nowrap',
         outline: 'none',
       }}
       onMouseEnter={e => {
         if (!active) {
-          e.currentTarget.style.borderColor = tokens.pillActive;
-          e.currentTarget.style.color = 'var(--color-ink)';
+          e.currentTarget.style.borderColor = isAll ? 'var(--color-ink)' : tokens.pillActive;
+          e.currentTarget.style.background = color === 'amber' ? 'rgba(224,164,88,0.12)' : 'rgba(44,110,104,0.10)';
         }
       }}
       onMouseLeave={e => {
         if (!active) {
-          e.currentTarget.style.borderColor = 'rgba(32,48,46,0.20)';
-          e.currentTarget.style.color = 'rgba(32,48,46,0.60)';
+          e.currentTarget.style.borderColor = inactiveBorder;
+          e.currentTarget.style.background = 'transparent';
         }
       }}
     >
@@ -75,7 +85,7 @@ function FilterPill({ label, color, active, onClick }) {
 }
 
 // ─── Skill tag ────────────────────────────────────────────────────────────────
-function SkillTag({ skill, categoryColor, index }) {
+function SkillTag({ skill, categoryColor, isDimmed }) {
   const tokens = colorMap[categoryColor] ?? colorMap.teal;
   const Icon = skillIcons[skill.name];
   const isPrimary = skill.tier === 'primary';
@@ -91,7 +101,9 @@ function SkillTag({ skill, categoryColor, index }) {
     gap: '6px',
     borderRadius: '8px',
     transform: `rotate(${rotation.toFixed(2)}deg)`,
-    transition: 'transform 0.15s',
+    transition: 'all 0.2s ease',
+    opacity: isDimmed ? 0.35 : 1,
+    filter: isDimmed ? 'grayscale(0.6)' : 'none',
     cursor: 'default',
     userSelect: 'none',
   };
@@ -146,8 +158,8 @@ function SkillTag({ skill, categoryColor, index }) {
       style={{
         ...baseStyle,
         padding: '4px 10px',
-        background: 'rgba(32,48,46,0.05)',
-        border: '1.5px solid rgba(32,48,46,0.10)',
+        background: categoryColor === 'amber' ? 'rgba(224,164,88,0.10)' : 'rgba(32,48,46,0.05)',
+        border: `1.5px solid ${categoryColor === 'amber' ? 'rgba(224,164,88,0.35)' : 'rgba(32,48,46,0.12)'}`,
         fontFamily: 'var(--font-body, sans-serif)',
         fontSize: '0.75rem',
         fontWeight: 400,
@@ -157,7 +169,7 @@ function SkillTag({ skill, categoryColor, index }) {
       {Icon && (
         <Icon
           aria-hidden="true"
-          style={{ width: '14px', height: '14px', color: 'rgba(32,48,46,0.55)', flexShrink: 0 }}
+          style={{ width: '14px', height: '14px', color: categoryColor === 'amber' ? 'var(--color-amber)' : 'rgba(32,48,46,0.55)', flexShrink: 0 }}
         />
       )}
       {skill.name}
@@ -168,13 +180,16 @@ function SkillTag({ skill, categoryColor, index }) {
 // ─── Main grid ────────────────────────────────────────────────────────────────
 export default function SkillsGrid() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [activeTierFilter, setActiveTierFilter] = useState('all'); // 'all' | 'primary' | 'secondary'
 
-  const filtered = activeFilter === 'all'
-    ? skills
-    : skills.filter(s => s.category === activeFilter);
+  const filtered = (activeFilter === 'all'
+    ? skills.filter(s => !s.special)
+    : skills.filter(s => s.category === activeFilter)
+  );
 
-  // Find color for currently active category (used for "All" pill when category active)
-  const activeCat = skillCategories.find(c => c.id === activeFilter);
+  const toggleTierFilter = (tier) => {
+    setActiveTierFilter(prev => prev === tier ? 'all' : tier);
+  };
 
   return (
     <div style={{ fontFamily: 'var(--font-body, sans-serif)' }}>
@@ -184,14 +199,14 @@ export default function SkillsGrid() {
           display: 'flex',
           flexWrap: 'wrap',
           gap: '8px',
-          marginBottom: '24px',
+          marginBottom: '20px',
         }}
         role="group"
         aria-label="Filter skills by category"
       >
         <FilterPill
           label="All"
-          color={activeCat?.color ?? 'teal'}
+          color="teal"
           active={activeFilter === 'all'}
           onClick={() => setActiveFilter('all')}
         />
@@ -206,19 +221,17 @@ export default function SkillsGrid() {
         ))}
       </div>
 
-      {/* ── Skill tags ───────────────────────────────────────────────────── */}
-      <motion.div
-        layout
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '10px',
-          alignContent: 'flex-start',
-        }}
+      {/* ── Skill tags container with responsive height (scroll on mobile only, full visible on desktop) ───── */}
+      <div
+        className={`flex flex-wrap gap-2.5 items-start ${
+          activeFilter === 'all' ? 'max-md:max-h-[300px] max-md:overflow-y-auto max-md:pr-1.5' : ''
+        }`}
       >
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" initial={false}>
           {filtered.map((skill, i) => {
             const catColor = skillCategories.find(c => c.id === skill.category)?.color ?? 'teal';
+            const isDimmed = activeTierFilter !== 'all' && skill.tier !== activeTierFilter;
+
             return (
               <motion.div
                 key={skill.name}
@@ -227,39 +240,91 @@ export default function SkillsGrid() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.85 }}
                 transition={{
-                  duration: 0.18,
-                  delay: i * 0.012,   // stagger: deterministic, not random
+                  duration: 0.2,
+                  delay: i * 0.015,
                   ease: 'easeOut',
                 }}
               >
                 <SkillTag
                   skill={skill}
                   categoryColor={catColor}
-                  index={i}
+                  isDimmed={isDimmed}
                 />
               </motion.div>
             );
           })}
         </AnimatePresence>
-      </motion.div>
+      </div>
 
-      {/* ── Legend ──────────────────────────────────────────────────────── */}
+      {/* ── Interactive Legend Filter ───────────────────────────────────── */}
       <div
         style={{
           marginTop: '20px',
+          paddingTop: '12px',
+          borderTop: '1px solid rgba(32,48,46,0.10)',
           display: 'flex',
-          gap: '16px',
+          gap: '12px',
           flexWrap: 'wrap',
+          alignItems: 'center'
         }}
       >
-        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', color: 'rgba(32,48,46,0.50)', fontFamily: 'var(--font-body, sans-serif)' }}>
-          <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '3px', background: 'rgba(44,110,104,0.20)', border: '1.5px solid rgba(44,110,104,0.40)' }} />
-          Core skill
+        <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'rgba(32,48,46,0.5)', fontWeight: 600 }}>
+          Filter by level:
         </span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', color: 'rgba(32,48,46,0.50)', fontFamily: 'var(--font-body, sans-serif)' }}>
-          <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '3px', background: 'rgba(32,48,46,0.05)', border: '1.5px solid rgba(32,48,46,0.15)' }} />
-          Also comfortable with
-        </span>
+
+        <button
+          type="button"
+          onClick={() => toggleTierFilter('primary')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '0.75rem',
+            fontWeight: 500,
+            padding: '3px 8px',
+            borderRadius: '6px',
+            background: activeTierFilter === 'primary' ? 'rgba(32,48,46,0.10)' : 'transparent',
+            border: `1px solid ${activeTierFilter === 'primary' ? 'var(--color-ink)' : 'transparent'}`,
+            color: activeTierFilter === 'primary' ? 'var(--color-ink)' : 'rgba(32,48,46,0.70)',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '3px', background: 'rgba(44,110,104,0.30)', border: '1.5px solid var(--color-teal)' }} />
+          Core Skill {activeTierFilter === 'primary' ? '✓' : ''}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => toggleTierFilter('secondary')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '0.75rem',
+            fontWeight: 500,
+            padding: '3px 8px',
+            borderRadius: '6px',
+            background: activeTierFilter === 'secondary' ? 'rgba(32,48,46,0.10)' : 'transparent',
+            border: `1px solid ${activeTierFilter === 'secondary' ? 'var(--color-ink)' : 'transparent'}`,
+            color: activeTierFilter === 'secondary' ? 'var(--color-ink)' : 'rgba(32,48,46,0.70)',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <span style={{ display: 'inline-block', width: '10px', height: '10px', borderRadius: '3px', background: 'rgba(32,48,46,0.05)', border: '1.5px solid rgba(32,48,46,0.25)' }} />
+          Also comfortable with {activeTierFilter === 'secondary' ? '✓' : ''}
+        </button>
+
+        {activeTierFilter !== 'all' && (
+          <button
+            type="button"
+            onClick={() => setActiveTierFilter('all')}
+            style={{ fontSize: '0.7rem', color: 'var(--color-coral)', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', marginLeft: 'auto' }}
+          >
+            Show all levels
+          </button>
+        )}
       </div>
     </div>
   );

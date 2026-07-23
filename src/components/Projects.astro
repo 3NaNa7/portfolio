@@ -223,17 +223,41 @@ import {projects} from '../data/projects';
     .project-dot {
       transition: scale 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
     }
-    .project-card:hover .project-dot {
+    .project-card:hover .project-dot,
+    .project-card.mobile-active .project-dot {
       scale: 1.25;
       box-shadow: 0 0 0 4px rgba(224, 118, 90, 0.25), 0 0 12px var(--color-coral);
     }
-
     .phone-frame {
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
     }
-    .phone-frame:hover {
+    .project-card:hover .phone-frame,
+    .project-card.mobile-active .phone-frame {
       transform: scale(1.02);
       box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     }
   }
 </style>
+
+<script>
+  // Add mobile-active class to project cards when they are in the center of the viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('mobile-active');
+      } else {
+        entry.target.classList.remove('mobile-active');
+      }
+    });
+  }, {
+    rootMargin: '-35% 0px -35% 0px', // Triggers when element is in the middle 30% of screen
+    threshold: 0
+  });
+
+  // Only apply observer on mobile screens
+  if (window.innerWidth < 768) {
+    document.querySelectorAll('.project-card').forEach(card => {
+      observer.observe(card);
+    });
+  }
+</script>
