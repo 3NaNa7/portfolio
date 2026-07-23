@@ -8,10 +8,13 @@ const sections = [
   { id: 'experience',    label: 'The Climb'    },
   { id: 'projects',      label: 'Summit'       },
   { id: 'academic-work', label: 'The Overlook' },
+  { id: 'resume',        label: "Trail's End"  },
 ];
 
 // ─── Companion SVG — mirrors the character drawn in Hero.astro ────────────────
-function CompanionIcon({ size = 40 }) {
+function CompanionIcon({ size = 40, wave = false, reducedMotion = false }) {
+  const waveKeyframes = [0, -25, 10, -25, 10, -15, 0];
+  const waveTimes = [0, 0.15, 0.3, 0.45, 0.6, 0.8, 1];
   return (
     <svg
       width={size}
@@ -25,6 +28,38 @@ function CompanionIcon({ size = 40 }) {
       <ellipse cx="30" cy="26" rx="25" ry="18" fill="var(--color-coral)" />
       <circle cx="22" cy="21" r="3" fill="var(--color-ink)" />
       <circle cx="38" cy="21" r="3" fill="var(--color-ink)" />
+      <AnimatePresence>
+        {wave && (
+          <motion.g
+            key="wave-arm"
+            style={{ transformOrigin: '44px 23px' }}
+            initial={{ opacity: 0, scale: 0.6, rotate: 0 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              rotate: reducedMotion ? 0 : waveKeyframes,
+            }}
+            exit={{ opacity: 0, scale: 0.6 }}
+            transition={{
+              opacity: { duration: reducedMotion ? 0 : 0.2 },
+              scale: { duration: reducedMotion ? 0 : 0.2 },
+              rotate: {
+                duration: reducedMotion ? 0 : 1.4,
+                times: reducedMotion ? undefined : waveTimes,
+                ease: 'easeInOut',
+              },
+            }}
+          >
+            <line
+              x1="44" y1="23" x2="53" y2="9"
+              stroke="var(--color-coral)"
+              strokeWidth="7"
+              strokeLinecap="round"
+            />
+            <circle cx="53" cy="9" r="4.5" fill="var(--color-coral)" />
+          </motion.g>
+        )}
+      </AnimatePresence>
     </svg>
   );
 }
@@ -308,7 +343,7 @@ export default function ScrollCompanion() {
                     ...(!reducedMotion ? { y: bobTransition } : {}),
                   }}
                 >
-                  <CompanionIcon size={36} />
+                  <CompanionIcon size={36} wave={activeId === 'resume'} reducedMotion={reducedMotion} />
                 </motion.div>
               </motion.div>
 
@@ -428,7 +463,7 @@ export default function ScrollCompanion() {
                   animate={bobAnimate}
                   transition={bobTransition}
                 >
-                  <CompanionIcon size={22} />
+                  <CompanionIcon size={22} wave={activeId === 'resume'} reducedMotion={reducedMotion} />
                 </motion.div>
 
                 <AnimatePresence mode="wait">
