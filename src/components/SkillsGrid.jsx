@@ -240,8 +240,8 @@ export default function SkillsGrid() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.85 }}
                 transition={{
-                  duration: 0.2,
-                  delay: i * 0.015,
+                  duration: 0.3,
+                  delay: i * 0.045,
                   ease: 'easeOut',
                 }}
               >

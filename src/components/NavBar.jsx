@@ -65,7 +65,7 @@ function Wordmark({ scrolled }) {
         gap:            '5px',
       }}
     >
-      {/* Teal bracket */}
+      {/* Teal opening angle bracket < */}
       <span style={{
         fontFamily: 'var(--font-body, monospace)',
         fontWeight: 700,
@@ -73,7 +73,7 @@ function Wordmark({ scrolled }) {
         color:      'var(--color-teal)',
         lineHeight: 1,
         opacity:    0.75,
-      }}>{'{'}</span>
+      }}>{'<'}</span>
 
       {/* Initials */}
       <span style={{
@@ -86,18 +86,17 @@ function Wordmark({ scrolled }) {
         lineHeight:    1,
       }}>SBA</span>
 
-      {/* Coral dot — like a "trail marker" echoing the coral dots in ScrollCompanion */}
+      {/* Coral slash / instead of the dot */}
       <span style={{
-        display:      'inline-block',
-        width:        '6px',
-        height:       '6px',
-        borderRadius: '50%',
-        background:   'var(--color-coral)',
-        flexShrink:   0,
-        marginBottom: '1px',
-      }} />
+        fontFamily: 'var(--font-body, monospace)',
+        fontWeight: 700,
+        fontSize:   '1.1rem',
+        color:      'var(--color-coral)',
+        lineHeight: 1,
+        opacity:    0.9,
+      }}>{'/'}</span>
 
-      {/* Teal closing bracket */}
+      {/* Teal closing angle bracket > */}
       <span style={{
         fontFamily: 'var(--font-body, monospace)',
         fontWeight: 700,
@@ -105,7 +104,7 @@ function Wordmark({ scrolled }) {
         color:      'var(--color-teal)',
         lineHeight: 1,
         opacity:    0.75,
-      }}>{'}'}</span>
+      }}>{'>'}</span>
     </a>
   );
 }
@@ -231,8 +230,8 @@ export default function NavBar() {
   const dur = (ms) => (reducedMotion ? 0 : ms / 1000);
 
   const barStyle = {
-    background:   scrolled ? 'var(--color-paper)' : 'transparent',
-    borderBottom: scrolled ? '1.5px dashed rgba(32,48,46,0.18)' : '1.5px dashed transparent',
+    background:   (scrolled || menuOpen) ? 'var(--color-paper)' : 'transparent',
+    borderBottom: (scrolled || menuOpen) ? '1.5px dashed rgba(32,48,46,0.18)' : '1.5px dashed transparent',
     transition:   reducedMotion ? 'none' : 'background 0.35s ease, border-color 0.35s ease',
   };
 

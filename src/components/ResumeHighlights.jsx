@@ -33,9 +33,9 @@ export default function ResumeHighlights() {
     hidden: {},
     visible: {
       transition: {
-        // 0.1s stagger: 5 cards = last card starts at 0.4s, finishes at 0.75s total
-        staggerChildren: 0.1,
-        delayChildren: 0,
+        // 0.22s stagger: 5 cards = last card starts at 0.88s, finishes at ~1.3s total (visibly satisfying and smooth)
+        staggerChildren: 0.22,
+        delayChildren: 0.1,
       },
     },
   };
@@ -46,7 +46,7 @@ export default function ResumeHighlights() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.35,
+        duration: 0.55,
         ease: 'easeOut',
       },
     },
