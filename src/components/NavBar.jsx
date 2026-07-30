@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ContactIcons from './ContactIcons';
 
 // ── Nav links (order matches index.astro rendering) ──────────────────────────
 const NAV_LINKS = [
@@ -278,6 +279,14 @@ export default function NavBar() {
               reducedMotion={reducedMotion}
             />
           ))}
+          <div style={{
+            width: '1.5px',
+            height: '14px',
+            background: 'var(--color-ink)',
+            opacity: 0.15,
+            flexShrink: 0,
+          }} />
+          <ContactIcons iconSize={18} className="text-ink" />
         </div>
 
         {/* Hamburger — hidden on desktop via CSS media query */}
@@ -330,6 +339,13 @@ export default function NavBar() {
                 onClick={() => setMenuOpen(false)}
               />
             ))}
+            <div style={{
+              height: '1.5px',
+              borderTop: '1.5px dashed rgba(32,48,46,0.18)',
+              marginTop: '4px',
+              width: '100%',
+            }} />
+            <ContactIcons iconSize={20} className="text-ink self-center pt-1" />
           </motion.div>
         )}
       </AnimatePresence>
