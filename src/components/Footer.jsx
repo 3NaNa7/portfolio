@@ -10,17 +10,20 @@ export default function Footer() {
       className="w-full flex flex-col items-center justify-center text-center px-6 relative"
     >
       {/* Hand-drawn style decorative wavy top border to mirror rolling hills */}
-      <div className="w-full overflow-hidden leading-none select-none pointer-events-none" style={{ height: '24px' }}>
+      <div className="w-full overflow-hidden leading-none select-none pointer-events-none" style={{ height: '32px' }}>
         <svg
-          viewBox="0 0 1200 24"
+          viewBox="0 0 1200 32"
           preserveAspectRatio="none"
           className="w-full h-full"
-          style={{ transform: 'rotate(180deg)' }}
         >
           <path
-            d="M0,0 C150,15 350,5 500,12 C650,19 850,8 1000,15 C1150,22 1200,0 1200,0 L1200,24 L0,24 Z"
-            fill="#A8CFC9"
-            opacity="0.18"
+            d="M0,16 Q300,4 600,16 T1200,16"
+            stroke="var(--color-teal)"
+            strokeWidth="2.5"
+            strokeDasharray="8 8"
+            strokeLinecap="round"
+            fill="none"
+            opacity="0.4"
           />
         </svg>
       </div>
