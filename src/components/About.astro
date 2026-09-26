@@ -43,12 +43,13 @@ import SkillsGrid from './SkillsGrid.jsx';
         A bit about me
       </h2>
       <p class="font-body text-base sm:text-lg text-ink/80 leading-relaxed">
-        I enjoy building software that sits at the intersection of user experience and intelligent systems.
-        My background spans mobile development, web technologies, and machine learning research;
-         from building Flutter applications to contributing to African Sign Language translation research.
+        I like figuring things out. How things work, why they work, and occasionally why they don’t.
+Software turned out to be a pretty good place for that curiosity to live.
+These days, that means building across web and mobile, exploring AI/ML, and working on research when a problem gets interesting enough.
+Some of my interesting stuff are  below. <!-- TODO: turn this below text into an artistic link to the projects section -->
       </p>
       <p class="font-body text-sm italic text-coral font-medium">
-        "still learning as I build this site — that's kind of the point"
+        I tend to turn “I wonder if…” into “I built it.”
       </p>
     </div>
 
@@ -69,7 +70,7 @@ import SkillsGrid from './SkillsGrid.jsx';
     transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
     will-change: opacity, transform;
   }
-  
+
   .skills-reveal-wrapper.is-revealed {
     opacity: 1;
     transform: translateY(0);
@@ -90,8 +91,8 @@ import SkillsGrid from './SkillsGrid.jsx';
   const wrapper = document.querySelector('.skills-reveal-wrapper');
   if (wrapper) {
     observer.observe(wrapper);
-    
-    // Fallback: If user scrolls extremely fast or JS is slow, 
+
+    // Fallback: If user scrolls extremely fast or JS is slow,
     // ensure it shows up after a timeout just in case.
     setTimeout(() => {
       wrapper.classList.add('is-revealed');
