@@ -1,3 +1,7 @@
+---
+import Tagline from './Tagline.jsx';
+---
+
 <section id="hero" class="relative w-full min-h-[70vh] sm:min-h-screen bg-paper overflow-hidden flex flex-col justify-between">
   <!-- Overlay Content -->
   <div class="relative z-10 w-full max-w-6xl mx-auto px-6 pt-16 sm:pt-24 md:pt-32 pb-8 flex-grow flex flex-col justify-center">
@@ -7,9 +11,7 @@
     <h3 class="font-heading text-xl sm:text-2xl md:text-3xl text-ink/80 mt-2">
       Software Engineer | Web · Mobile · AI/ML
     </h3>
-    <p class="font-body text-base sm:text-xl md:text-2xl text-ink/80 mt-4 max-w-2xl">
-       I think. I design. I BUILD.
-    </p>
+    <Tagline client:visible />
   </div>
   <!-- SVG Illustration Container -->
   <div class="absolute inset-0 z-0 pointer-events-none">
@@ -153,6 +155,11 @@
     }
   }
 
+  /* Push interactive path & companion group lower to give tagline shapes breathing room */
+  #hero-interactive-group {
+    transform: translate(0, 35px);
+  }
+
   /* Tablet positioning adjustments for SVG groups (641px - 1024px) */
   @media (min-width: 641px) and (max-width: 1024px) {
     #hero-sun-group {
@@ -165,7 +172,7 @@
       transform: translate(-100px, 20px);
     }
     #hero-interactive-group {
-      transform: translate(250px, 5px);
+      transform: translate(250px, 40px);
     }
   }
 
@@ -181,7 +188,7 @@
       transform: translate(-100px, 40px);
     }
     #hero-interactive-group {
-      transform: translate(300px, 10px);
+      transform: translate(300px, 45px);
     }
   }
 </style>
