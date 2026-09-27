@@ -678,9 +678,18 @@ function TechPill({ tech }) {
         stiffness: 450,
         damping: 20,
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsHovered(true)}
+      onPointerEnter={(e) => {
+        if (e.pointerType === 'mouse') setIsHovered(true);
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === 'mouse') setIsHovered(false);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setIsHovered((prev) => !prev);
+        }
+      }}
       onBlur={() => setIsHovered(false)}
       onClick={handleToggle}
       tabIndex={0}

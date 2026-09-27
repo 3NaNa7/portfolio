@@ -53,17 +53,23 @@ function NavLink({ id, label, isActive, reducedMotion, onClick }) {
 }
 
 // ── Wordmark / Logo ──────────────────────────────────────────────────────────
-function Wordmark({ scrolled }) {
+function Wordmark({ visible, reducedMotion }) {
   return (
     <a
       href="#hero"
       onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
       style={{
         textDecoration: 'none',
         flexShrink:     0,
         display:        'inline-flex',
         alignItems:     'center',
         gap:            '5px',
+        opacity:        visible ? 1 : 0,
+        transform:      visible ? 'translateY(0)' : 'translateY(-6px)',
+        pointerEvents:  visible ? 'auto' : 'none',
+        transition:     reducedMotion ? 'none' : 'opacity 0.3s ease, transform 0.3s ease',
       }}
     >
       {/* Teal opening angle bracket < */}
@@ -169,11 +175,9 @@ export default function NavBar() {
     if (typeof window === 'undefined') return;
     setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-    // Past-Hero detection
-    const heroEl = document.getElementById('hero');
+    // Past-Hero detection (activates when scrolled past top of page)
     const checkScrolled = () => {
-      const heroH = heroEl?.offsetHeight ?? window.innerHeight;
-      setScrolled(window.scrollY > heroH * 0.6);
+      setScrolled(window.scrollY > 80);
     };
     checkScrolled();
     window.addEventListener('scroll', checkScrolled, { passive: true });
@@ -260,7 +264,7 @@ export default function NavBar() {
         alignItems:     'center',
         justifyContent: 'space-between',
       }}>
-        <Wordmark scrolled={scrolled} />
+        <Wordmark visible={scrolled || menuOpen} reducedMotion={reducedMotion} />
 
         {/* Desktop link row — hidden on mobile via CSS media query (not Tailwind class) */}
         <div style={{
