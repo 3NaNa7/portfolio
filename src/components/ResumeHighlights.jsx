@@ -136,9 +136,9 @@ export default function ResumeHighlights() {
         {/* Pull-quote Callout */}
         <div className='relative py-2 select-none'>
           <span className='font-heading text-2xl sm:text-3xl text-ink font-bold relative inline-block'>
-            I'm currently looking for my next{' '}
+            I'm open to new{' '}
             <span className='text-teal relative inline-block'>
-              opportunity
+              opportunities
               {/* Subtle hand-drawn styled underline flourish */}
               <svg
                 className='absolute left-0 -bottom-1.5 w-full h-2 text-amber'
