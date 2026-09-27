@@ -27,8 +27,7 @@ import {projects} from '../data/projects';
       <!-- Projects Grid/List -->
       <div class="flex flex-col gap-16 md:gap-28 relative z-10">
         {projects.map((project, index) => {
-          const isEarly = project.status === 'early';
-          const isPaused = project.status === 'paused';
+
 
           return (
             <div class="project-card relative w-full flex flex-col md:flex-row gap-8 md:gap-12 items-center">
@@ -38,32 +37,9 @@ import {projects} from '../data/projects';
 
               <!-- Visual Phone Mockup / Screenshot window -->
               <div class="phone-container flex-shrink-0 flex items-center justify-center">
-                {isEarly ? (
-                  /* Early/FindMe style: 70% scale, simple border */
-                  <div class="relative w-[140px] h-[280px] md:w-[126px] md:h-[252px] rounded-xl border border-ink/15 overflow-hidden bg-paper shadow-md">
-                    <div class="relative w-full h-full overflow-hidden bg-paper">
-                      <img
-                        src={project.screenshot}
-                        alt={`${project.name} screenshot`}
-                        class="w-full h-full object-cover"
-                        onload="this.style.display='block'; this.nextElementSibling.style.display='none';"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                      />
-                      <div class="hidden absolute inset-0 bg-teal/10 text-ink/50 font-sans text-[10px] flex-col items-center justify-center p-3 text-center leading-normal">
-                        <span>Add screenshot to</span>
-                        <code class="text-[9px] bg-ink/5 px-1 py-0.5 rounded mt-1 font-mono break-all">
-                          public/projects/{project.slug}/1.png
-                        </code>
-                      </div>
-                      {/* Screen Glare Overlay */}
-                      <div class="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/5 to-white/15 mix-blend-overlay z-20"></div>
-                    </div>
-                  </div>
-                ) : (
+                { (
                   /* Normal/Flagship/Paused style: Full frame, notch bezel */
-                  <div class={`relative w-[200px] h-[400px] md:w-[180px] md:h-[360px] rounded-[2rem] p-2 pb-3 pt-6 flex flex-col justify-between shadow-xl phone-frame ${
-                    isPaused ? 'border-2 border-dashed border-coral bg-ink/5' : 'bg-ink'
-                  }`}>
+                  <div class="relative w-[200px] h-[400px] md:w-[180px] md:h-[360px] rounded-[2rem] p-2 pb-3 pt-6 flex flex-col justify-between shadow-xl phone-frame bg-ink">
                     {/* Notch Bezel */}
                     <div class="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-3.5 bg-ink rounded-full z-30"></div>
 
@@ -95,22 +71,6 @@ import {projects} from '../data/projects';
                   <h3 class="font-heading text-2xl font-bold text-ink leading-none">
                     {project.name}
                   </h3>
-
-                  {project.status === 'paused' && (
-                    <span class="font-sans text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 bg-coral/10 border border-coral/25 text-coral rounded shadow-[0_0_8px_rgba(224,118,90,0.15)]">
-                      Paused
-                    </span>
-                  )}
-                  {project.status === 'early' && (
-                    <span class="font-sans text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 bg-amber/10 border border-amber/25 text-amber rounded shadow-[0_0_8px_rgba(224,164,88,0.15)]">
-                      Early Work
-                    </span>
-                  )}
-                  {project.status === 'flagship' && (
-                    <span class="font-sans text-[9px] uppercase tracking-wider font-extrabold px-2 py-0.5 bg-teal/10 border border-teal/25 text-teal rounded shadow-[0_0_8px_rgba(44,110,104,0.15)]">
-                      Flagship
-                    </span>
-                  )}
                 </div>
 
                 <p class="font-sans italic text-sm text-ink/70 mb-3 leading-relaxed">
@@ -218,46 +178,76 @@ import {projects} from '../data/projects';
     }
   }
 
-  /* Interactive hover animations (respects prefers-reduced-motion) */
+  /* Interactive hover & scroll-active animations (respects prefers-reduced-motion) */
   @media (prefers-reduced-motion: no-preference) {
+    .project-card {
+      transition: opacity 0.45s ease;
+    }
+    .project-card:not(.active):not(:hover) {
+      opacity: 0.8;
+    }
+    .project-card.active,
+    .project-card:hover {
+      opacity: 1;
+    }
+
     .project-dot {
-      transition: scale 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+      opacity: 0.6;
+      scale: 1;
+      transition: scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.45s ease, opacity 0.45s ease;
     }
     .project-card:hover .project-dot,
+    .project-card.active .project-dot,
     .project-card.mobile-active .project-dot {
-      scale: 1.25;
-      box-shadow: 0 0 0 4px rgba(224, 118, 90, 0.25), 0 0 12px var(--color-coral);
+      opacity: 1;
+      scale: 1.45;
+      box-shadow: 0 0 0 6px rgba(224, 118, 90, 0.35), 0 0 18px var(--color-coral);
     }
+
     .phone-frame {
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+      opacity: 0.85;
+      transform: scale(1);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease, opacity 0.45s ease;
     }
     .project-card:hover .phone-frame,
+    .project-card.active .phone-frame,
     .project-card.mobile-active .phone-frame {
-      transform: scale(1.02);
-      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      opacity: 1;
+      transform: scale(1.05);
+      box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.22), 0 12px 16px -6px rgba(0, 0, 0, 0.15);
+    }
+
+    .text-panel {
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .project-card:hover .text-panel,
+    .project-card.active .text-panel {
+      transform: translateY(-2px);
     }
   }
 </style>
 
 <script>
-  // Add mobile-active class to project cards when they are in the center of the viewport
+  // Add active class to project cards ONLY when they hit the central focal strip of the screen
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
+        entry.target.classList.add('active');
         entry.target.classList.add('mobile-active');
       } else {
+        entry.target.classList.remove('active');
         entry.target.classList.remove('mobile-active');
       }
     });
   }, {
-    rootMargin: '-35% 0px -35% 0px', // Triggers when element is in the middle 30% of screen
-    threshold: 0
+    // Tight 16% center focal band (42% top margin, 42% bottom margin)
+    // Ensures only ONE project is active at a time as you scroll
+    rootMargin: '-42% 0px -42% 0px',
+    threshold: 0.1
   });
 
-  // Only apply observer on mobile screens
-  if (window.innerWidth < 768) {
-    document.querySelectorAll('.project-card').forEach(card => {
-      observer.observe(card);
-    });
-  }
+  // Observe all project cards across desktop and mobile
+  document.querySelectorAll('.project-card').forEach(card => {
+    observer.observe(card);
+  });
 </script>

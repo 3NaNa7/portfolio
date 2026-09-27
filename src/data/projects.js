@@ -2,14 +2,13 @@ export const projects = [
   {
     slug: 'findme',
     name: 'FindMe',
-    status: 'early',
-    tagline: 'The first app I ever built.',
+    tagline: 'Real-time location sharing.',
     description:
-      'A simple real-time location sharing app — share your position with friends, watch it update live, and get it converted into a readable address via the Google Maps API. Not much UI polish, but everything here taught me how apps actually work.',
+      'I wanted to answer a simple question: “Where are you right now?” So I built FindMe, a mobile app that live-tracks your location with friends and turns mysterious, moving coordinates into actual addresses. It was my first real experiment in mobile development, and it gave me the thrill of taking an idea from a blank screen to a working, real-time app.',
     tech: [
-      'Google Maps API',
-      'Real-time updates',
-      'Geocoding',
+      'Google Maps SDK',
+      'Firebase',
+      'Flutter',
     ],
     repoUrl: 'https://github.com/3NaNa7/FindMe',
     repoPrivate: false,
@@ -18,15 +17,11 @@ export const projects = [
   {
     slug: 'afrisign',
     name: 'AfriSign',
-    status: 'paused',
     tagline:
-      'Sign language translation — paused, not abandoned.',
+      'The Screen where AI meets Sign Language.',
     description:
-      "Built as a research assistant on the AfriSign project: the full frontend for a sign language machine translation app. My contract ended before the frontend could be wired up to the translation model, so the app works but doesn't yet talk to any AI. Next step: find an open sign-language model on Hugging Face or GitHub and finish the connection myself.",
-    tech: [
-      'Flutter',
-      'ML model integration (in progress)',
-    ],
+      "I didn't build the AI behind AfriSign, but I built the screen it lives on. AfriSign was a research project exploring machine translation across six African sign languages. My contribution was designing and developing the mobile app interface, creating the user-facing experience where people would input signs and receive translations. It was a great exercise in building clean, accessible UI to support complex academic research, which was ultimately published in Discover Artificial Intelligence.",
+    tech: ['Flutter', 'Figma'],
     repoUrl: 'https://github.com/3NaNa7/afrisign',
     repoPrivate: false,
     screenshot: '/projects/afrisign/1.png',
@@ -34,17 +29,11 @@ export const projects = [
   {
     slug: 'dialogi',
     name: 'Dialogi',
-    status: 'flagship',
     tagline:
-      'Real-time audio rooms for academic discussion.',
+      'Real-time Audio Rooms for Academic Discussion.',
     description:
-      'Join a default room or spin up your own, drop in on a live conversation the way you would on a call, and talk through whatever academic topic brought you there. Real-time audio is powered by Agora, with Firebase handling auth and data underneath.',
-    tech: [
-      'Agora.io',
-      'Firebase',
-      'Firebase Auth',
-      'Provider',
-    ],
+      'I wanted to make academic discussions feel a little less like awkwardly waiting for someone to raise their hand. So I built Dialogi, a real-time audio platform for topic-based student conversations. I led the mobile and backend development, wiring up the live communication. It ended up being adopted by 150+ KNUST Computer Science students, with folks from Math, Physics, and EE jumping in too.',
+    tech: ['Agora.io', 'Flutter', 'Firebase'],
     repoUrl: 'https://github.com/3NaNa7/dialogi',
     repoPrivate: false,
     screenshot: '/projects/dialogi/1.jpg',
@@ -52,16 +41,14 @@ export const projects = [
   {
     slug: 'reproplan',
     name: 'ReproPlan',
-    status: 'flagship',
     tagline:
-      'Anonymous SRHR guidance for Ghanaian youth.',
+      'Anonymous SRHR Guidance for Ghanaian Youth.',
     description:
-      'An AI-powered, fully anonymous platform for sexual and reproductive health information. A local-and-cloud LLM chatbot answers questions privately, and OpenStreetMap routes users to their nearest clinic when they need one.',
+      "ReproPlan's mission is to make reproductive health information and services easily accessible from a single place. My role is to bring that vision to life by building the core mobile application. I'm developing the key user flows for health info, facility discovery, contraceptive requests, and emergency support, while laying the technical groundwork for upcoming AI-assisted features. The core product and its main flows are already taking shape.",
     tech: [
-      'Local + cloud LLM',
+      'Local LLM',
       'Supabase',
       'OpenStreetMap',
-      'Riverpod',
     ],
     repoUrl: null,
     repoPrivate: true,
