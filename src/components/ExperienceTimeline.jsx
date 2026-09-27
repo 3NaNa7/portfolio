@@ -2,6 +2,45 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
 import { experiences } from "../data/experience.js";
 
+// Technology logo icons
+import {
+  SiNodedotjs,
+  SiExpress,
+  SiBootstrap,
+  SiHtml5,
+  SiJavascript,
+  SiWordpress,
+  SiGithub,
+  SiFlutter,
+  SiSupabase,
+  SiOpenstreetmap,
+} from "react-icons/si";
+import {
+  FaGlobe,
+  FaChalkboardTeacher,
+  FaChartLine,
+  FaServer,
+  FaCodeBranch,
+} from "react-icons/fa";
+
+const techIconMap = {
+  "Node.js": SiNodedotjs,
+  "Express.js": SiExpress,
+  "Bootstrap": SiBootstrap,
+  "HTML5 & CSS3": SiHtml5,
+  "JavaScript": SiJavascript,
+  "WordPress": SiWordpress,
+  "GitHub Pages": SiGithub,
+  "Web Tech (HTML/CSS/JS)": FaGlobe,
+  "Virtual Classroom Tech": FaChalkboardTeacher,
+  "Social Media Analytics": FaChartLine,
+  "System Admin": FaServer,
+  "Flutter": SiFlutter,
+  "Riverpod": FaCodeBranch,
+  "Supabase": SiSupabase,
+  "OpenStreetMap API": SiOpenstreetmap,
+};
+
 // Animation variants for direction-based slide
 const panelVariants = {
   enter: (direction) => ({
@@ -243,9 +282,85 @@ export default function ExperienceTimeline() {
             <p className="font-body text-base text-ink/80 leading-relaxed pt-2">
               {experiences[activeIndex].description}
             </p>
+
+            {/* Technologies Used */}
+            {experiences[activeIndex].tech && experiences[activeIndex].tech.length > 0 && (
+              <div className="pt-4 mt-6 border-t border-ink/10">
+                <span className="block text-[11px] font-bold font-body text-ink/50 uppercase tracking-widest mb-3">
+                  Technologies Used & Contribution
+                </span>
+                <div className="flex flex-wrap gap-2.5 items-center">
+                  {experiences[activeIndex].tech.map((t) => (
+                    <TechPill key={t.name} tech={t} />
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+// Interactive Technology Pill with bulging hover animation & tooltip
+function TechPill({ tech }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const IconComponent = techIconMap[tech.name] || FaGlobe;
+
+  return (
+    <motion.div
+      className="relative group inline-block"
+      whileHover={{ scale: 1.12, y: -2 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 450, damping: 20 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsHovered(true)}
+      onBlur={() => setIsHovered(false)}
+      tabIndex={0}
+      role="button"
+      aria-expanded={isHovered}
+      aria-label={`${tech.name}: ${tech.usage}`}
+    >
+      <div
+        className={`px-3.5 py-1.5 rounded-full text-xs font-semibold font-body tracking-wide border cursor-pointer select-none transition-colors duration-200 flex items-center gap-2 shadow-xs ${
+          isHovered
+            ? "bg-teal/15 border-teal/50 text-teal-800 shadow-md ring-2 ring-teal/20"
+            : "bg-paper border-ink/15 text-ink/80 hover:border-teal/40 hover:text-teal"
+        }`}
+      >
+        <IconComponent
+          className={`w-3.5 h-3.5 shrink-0 transition-all duration-200 ${
+            isHovered ? "text-coral scale-110" : "text-teal/80"
+          }`}
+        />
+        <span>{tech.name}</span>
+      </div>
+
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.9, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
+            exit={{ opacity: 0, y: 4, scale: 0.92, x: "-50%" }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute bottom-full left-1/2 mb-2.5 w-60 sm:w-64 p-3 bg-ink text-paper rounded-xl shadow-2xl z-50 pointer-events-none text-left border border-paper/10 max-w-[80vw]"
+          >
+            <div className="flex items-center gap-2 mb-1.5 border-b border-paper/15 pb-1">
+              <IconComponent className="w-3.5 h-3.5 text-coral shrink-0" />
+              <span className="font-heading font-bold text-xs text-coral tracking-wide">
+                {tech.name}
+              </span>
+            </div>
+            <p className="font-body text-[11.5px] text-paper/90 leading-relaxed">
+              {tech.usage}
+            </p>
+            {/* Tooltip Downward Arrow */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] w-0 h-0 border-x-[6px] border-x-transparent border-t-[6px] border-t-ink" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
