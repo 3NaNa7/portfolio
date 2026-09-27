@@ -88,9 +88,109 @@ export default function ExperienceTimeline() {
   const [trackWidth, setTrackWidth] = useState(0);
   const [hasNudged, setHasNudged] =
     useState(false);
-
+  const [showHint, setShowHint] = useState(false);
+  const containerRef = useRef(null);
   const trackRef = useRef(null);
+  const [isInViewport, setIsInViewport] =
+    useState(false);
   const x = useMotionValue(0);
+
+  // Check session storage on mount for discovery hint
+  useEffect(() => {
+    try {
+      const interacted = sessionStorage.getItem(
+        'experience_timeline_interacted',
+      );
+      if (!interacted) {
+        setShowHint(true);
+      }
+    } catch {
+      setShowHint(true);
+    }
+  }, []);
+
+  const dismissHint = () => {
+    setShowHint(false);
+    try {
+      sessionStorage.setItem(
+        'experience_timeline_interacted',
+        'true',
+      );
+    } catch {
+      // Ignore storage errors in restricted environments
+    }
+  };
+
+  // IntersectionObserver to detect when Experience section is in viewport
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInViewport(entry.isIntersecting);
+      },
+      {
+        threshold: 0.15,
+      },
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Global keydown listener when Experience section is in viewport
+  useEffect(() => {
+    if (!isInViewport) return;
+
+    const handleGlobalKeyDown = (e) => {
+      const target = e.target;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        dismissHint();
+        setActiveIndex((prev) => {
+          const next = Math.min(
+            experiences.length - 1,
+            prev + 1,
+          );
+          if (next !== prev) {
+            triggerHaptic();
+            setDirection(1);
+          }
+          return next;
+        });
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        dismissHint();
+        setActiveIndex((prev) => {
+          const next = Math.max(0, prev - 1);
+          if (next !== prev) {
+            triggerHaptic();
+            setDirection(-1);
+          }
+          return next;
+        });
+      }
+    };
+
+    window.addEventListener(
+      'keydown',
+      handleGlobalKeyDown,
+    );
+    return () => {
+      window.removeEventListener(
+        'keydown',
+        handleGlobalKeyDown,
+      );
+    };
+  }, [isInViewport]);
 
   // Measure track width and listen for window resizing
   useEffect(() => {
@@ -181,18 +281,34 @@ export default function ExperienceTimeline() {
     hasNudged,
   ]);
 
+  const triggerHaptic = () => {
+    if (
+      typeof window !== 'undefined' &&
+      'vibrate' in navigator
+    ) {
+      try {
+        navigator.vibrate(8);
+      } catch {
+        // Ignore vibration errors if restricted or unsupported
+      }
+    }
+  };
+
   const changeActiveIndex = (newIndex) => {
     if (newIndex === activeIndex) return;
+    triggerHaptic();
     setDirection(newIndex > activeIndex ? 1 : -1);
     setActiveIndex(newIndex);
   };
 
   const handleDotClick = (index) => {
+    dismissHint();
     changeActiveIndex(index);
   };
 
   const handleTrackClick = (e) => {
     if (!trackRef.current) return;
+    dismissHint();
     const rect =
       trackRef.current.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
@@ -210,6 +326,7 @@ export default function ExperienceTimeline() {
   };
 
   const handleDrag = () => {
+    dismissHint();
     const currentX = x.get();
     const nearestIndex = Math.min(
       experiences.length - 1,
@@ -241,6 +358,7 @@ export default function ExperienceTimeline() {
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowRight') {
       e.preventDefault();
+      dismissHint();
       const nextIndex = Math.min(
         experiences.length - 1,
         activeIndex + 1,
@@ -248,6 +366,7 @@ export default function ExperienceTimeline() {
       handleDotClick(nextIndex);
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
+      dismissHint();
       const prevIndex = Math.max(
         0,
         activeIndex - 1,
@@ -257,7 +376,34 @@ export default function ExperienceTimeline() {
   };
 
   return (
-    <div className='w-full max-w-4xl mx-auto py-8'>
+    <div
+      ref={containerRef}
+      className='w-full max-w-4xl mx-auto py-8'
+    >
+      {/* Top Header Hint Row: Positioned beside the section heading */}
+      <div className='flex justify-end items-center -mt-16 sm:-mt-20 mb-8 sm:mb-12 min-h-[1.5rem]'>
+        <AnimatePresence>
+          {showHint && (
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.25 }}
+              className='text-xs sm:text-sm font-body text-ink/50 select-none flex items-center gap-1.5'
+            >
+              <span className='hidden sm:inline-flex items-center gap-1.5'>
+                <span className='font-mono font-bold tracking-widest text-ink/75'>
+                  You can use ← → to browse
+                </span>
+              </span>
+              <span className='sm:hidden'>
+                swipe or tap to browse
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* Slider / Timeline Track Wrapper */}
       <div
         role='slider'
@@ -269,7 +415,8 @@ export default function ExperienceTimeline() {
         onKeyDown={handleKeyDown}
         ref={trackRef}
         onClick={handleTrackClick}
-        className='relative w-full h-12 flex items-center cursor-pointer select-none outline-none group'
+        style={{ touchAction: 'pan-y' }}
+        className='relative w-full h-12 flex items-center cursor-pointer select-none outline-none group touch-pan-y'
       >
         {/* Dashed Track Line (matches Hero path style) */}
         <div className='absolute left-0 right-0 h-1 pointer-events-none flex items-center'>
@@ -349,18 +496,24 @@ export default function ExperienceTimeline() {
             left: 0,
             right: trackWidth,
           }}
-          onDragStart={() => setIsDragging(true)}
+          onDragStart={() => {
+            setIsDragging(true);
+            dismissHint();
+          }}
           onDrag={handleDrag}
           onDragEnd={handleDragEnd}
-          style={{ x }}
-          className='absolute top-1/2 -translate-y-1/2 w-8 h-8 -ml-4 bg-paper border-4 border-coral rounded-full shadow-lg cursor-grab active:cursor-grabbing z-20 flex items-center justify-center group-focus:ring-2 group-focus:ring-teal group-focus:outline-none'
+          style={{ x, touchAction: 'pan-y' }}
+          className='absolute top-1/2 -translate-y-1/2 w-8 h-8 -ml-4 bg-paper border-4 border-coral rounded-full shadow-lg cursor-grab active:cursor-grabbing z-20 flex items-center justify-center group-focus:ring-2 group-focus:ring-teal group-focus:outline-none touch-pan-y before:absolute before:-inset-2 before:content-[""]'
         >
           <div className='w-2.5 h-2.5 bg-coral rounded-full' />
         </motion.div>
       </div>
 
-      {/* Experience Details Display (Directional Slide Transitions) */}
-      <div className='mt-12 min-h-[220px]'>
+      {/* Experience Details Display (Directional Slide Transitions & Mobile Card Swipe) */}
+      <div
+        className='mt-12 min-h-[220px] touch-pan-y'
+        style={{ touchAction: 'pan-y' }}
+      >
         <AnimatePresence
           mode='wait'
           custom={direction}
@@ -376,6 +529,30 @@ export default function ExperienceTimeline() {
             transition={{
               duration: 0.25,
               ease: 'easeInOut',
+            }}
+            onPanEnd={(e, info) => {
+              const swipeThreshold = 45;
+              // Swiped left -> advance to next experience
+              if (
+                info.offset.x < -swipeThreshold &&
+                activeIndex <
+                  experiences.length - 1
+              ) {
+                dismissHint();
+                changeActiveIndex(
+                  activeIndex + 1,
+                );
+              }
+              // Swiped right -> go to previous experience
+              else if (
+                info.offset.x > swipeThreshold &&
+                activeIndex > 0
+              ) {
+                dismissHint();
+                changeActiveIndex(
+                  activeIndex - 1,
+                );
+              }
             }}
             className='space-y-4'
           >

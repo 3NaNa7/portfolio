@@ -46,7 +46,19 @@ import SkillsGrid from './SkillsGrid.jsx';
         I like figuring things out. How things work, why they work, and occasionally why they don’t.
 Software turned out to be a pretty good place for that curiosity to live.
 These days, that means building across web and mobile, exploring AI/ML, and working on research when a problem gets interesting enough.
-Some of my interesting stuff are  below. <!-- TODO: turn this below text into an artistic link to the projects section -->
+Some of my interesting stuff are
+        <a
+          href="#projects"
+          aria-label="Jump to projects"
+          class="below-cta"
+          onclick="event.preventDefault(); document.getElementById('projects').scrollIntoView({behavior:'smooth'})"
+        >BEL<svg
+            class="below-cta__o"
+            viewBox="0 0 28 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          ><circle cx="14" cy="14" r="12" stroke="var(--color-teal)" stroke-width="2.2"/><polyline class="below-cta__chevron" points="9,11 14,17 19,11" stroke="var(--color-teal)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>W</a>.
       </p>
       <p class="font-body text-sm italic text-coral font-medium">
         I tend to turn “I wonder if…” into “I built it.”
@@ -74,6 +86,64 @@ Some of my interesting stuff are  below. <!-- TODO: turn this below text into an
   .skills-reveal-wrapper.is-revealed {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* ── BELOW CTA link ── */
+  .below-cta {
+    font-family: var(--font-heading, serif);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 1.6em;           /* ~1.6× the surrounding <p> text */
+    line-height: 1;             /* don't inflate paragraph line-height */
+    color: var(--color-teal);
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    margin-inline: 0.25em;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: middle;
+    transition: opacity 0.2s ease;
+  }
+
+  .below-cta:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* SVG "O" — sized to match the cap-height of the surrounding letters */
+  .below-cta__o {
+    width: 0.72em;
+    height: 0.72em;
+    display: inline-block;
+    vertical-align: middle;
+    /* small horizontal spacing so it doesn't crowd BEL / W */
+    margin-inline: 0.04em;
+    overflow: visible;
+  }
+
+  /* Hover: nudge chevron downward */
+  .below-cta__chevron {
+    transform-origin: 14px 14px;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .below-cta:hover .below-cta__chevron,
+  .below-cta:focus-visible .below-cta__chevron {
+    transform: translateY(3px);
+  }
+
+  /* Reduced-motion: disable translate, keep color */
+  @media (prefers-reduced-motion: reduce) {
+    .below-cta__chevron {
+      transition: none;
+    }
+    .below-cta:hover .below-cta__chevron,
+    .below-cta:focus-visible .below-cta__chevron {
+      transform: none;
+    }
   }
 </style>
 
